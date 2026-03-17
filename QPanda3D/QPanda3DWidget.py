@@ -41,7 +41,7 @@ class QPanda3DSynchronizer(QTimer):
                 pass
             self.qPanda3DWidget.update()
 
-    def __del__(self):
+    def deleteLater(self):
         self.stop()
 
 
@@ -232,3 +232,7 @@ class QPanda3DWidget(QWidget):
         global_x = widget_pos.x() + int(scaled_x)
         global_y = widget_pos.y() + int(scaled_y)
         QCursor.setPos(global_x, global_y)
+
+    def deleteLater(self, /):
+        self.synchronizer.deleteLater()
+        super().deleteLater()

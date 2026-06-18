@@ -10,7 +10,7 @@ Description :
 from PySide6.QtWidgets import QWidget
 
 # Panda imports
-from panda3d.core import LVecBase4f, loadPrcFileData, FrameBufferProperties, GraphicsPipe
+from panda3d.core import LVecBase4f, loadPrcFileData, FrameBufferProperties, GraphicsPipe, OrthographicLens
 from panda3d.core import GraphicsOutput, Texture, WindowProperties
 
 # Set up Panda environment
@@ -70,6 +70,15 @@ class Panda3DWorld(ShowBase):
         self.cam = self.makeCamera(self.buff)
         self.camNode = self.cam.node()
         self.camLens = self.camNode.get_lens()
+
+        self.cam2d = self.makeCamera2d(self.buff)
+
+        lens2d = OrthographicLens()
+        aspect = buff_size_x / buff_size_y
+        lens2d.setFilmSize(2 * aspect, 2)
+        lens2d.setNearFar(-1000, 1000)
+
+        self.cam2d.node().setLens(lens2d)
 
         if clear_color is None:
             self.buff.set_clear_active(GraphicsOutput.RTPColor, False)
